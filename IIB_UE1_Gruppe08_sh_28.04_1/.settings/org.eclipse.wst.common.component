@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="IIB_UE1_Gruppe08_sh_28.04_1">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
+        <wb-resource deploy-path="/WEB-INF/classes/" source-path="/ImportedClasses"/>
+        <property name="context-root" value="IIB_UE1_Gruppe08_sh_28.04_1"/>
+        <property name="java-output-path" value="/IIB_UE1_Gruppe08_sh_28.04_1/build/classes"/>
+    </wb-module>
+</project-modules>
