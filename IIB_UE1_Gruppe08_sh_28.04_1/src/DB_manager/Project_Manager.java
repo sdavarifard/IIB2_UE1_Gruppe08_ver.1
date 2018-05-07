@@ -92,7 +92,7 @@ public class Project_Manager {
 	}
 	
 	public static Nachtrag insertNewNachtrag(String title, LocalDate datum,String beschreibung,String VOB, String verursacher,
-			LocalDate frist, int bauteiID) {
+			LocalDate frist, int bauteilID) {
 		Nachtrag n = new Nachtrag();
 		n.setNachtrag_titel(title);
 		n.setNachtrag_datum(datum);
@@ -100,7 +100,7 @@ public class Project_Manager {
 		n.setNachtrag_vob(VOB);
 		n.setNachtrag_verursacher(verursacher);
 		n.setNachtrag_frist(frist);
-		n.setNachtrag_bauteil_id(bauteiID);
+		n.setNachtrag_bauteil_id(bauteilID);
 		return n;
 	}
 	public static void insertNewNachtragSQLTabele(Nachtrag n) throws ClassNotFoundException, SQLException {
@@ -110,6 +110,33 @@ public class Project_Manager {
 				+ " ('"+ n.getNachtrag_titel()+"','"+ n.getNachtrag_datum()+"','"+n.getNachtrag_beschreibung()+"',"
 				+ "'"+n.getNachtrag_vob()+"','"+n.getNachtrag_verursacher()+"','"+n.getNachtrag_frist()+"',"+n.getNachtrag_bauteil_id()+");";
 		execute(SQLInsertInto);
+	}
+	
+	public static Nachtragskalkulation insertNewNachtragskalkulation() {
+		Nachtragskalkulation n = new Nachtragskalkulation();
+		return n;
+	}
+	public static void insertNewNachtragSQLTabele(Nachtrag n) throws ClassNotFoundException, SQLException {
+		String SQLInsertInto="";
+		SQLInsertInto=" insert into nachtrag (nachtrag_titel, nachtrag_datum, nachtrag_beschreibung, "
+				+ "nachtrag_vob, nachtrag_verursacher, nachtrag_frist, nachtrag_bauteil_id) values"
+				+ " ('"+ n.getNachtrag_titel()+"','"+ n.getNachtrag_datum()+"','"+n.getNachtrag_beschreibung()+"',"
+				+ "'"+n.getNachtrag_vob()+"','"+n.getNachtrag_verursacher()+"','"+n.getNachtrag_frist()+"',"+n.getNachtrag_bauteil_id()+");";
+		execute(SQLInsertInto);
+	}
+	
+	public static int getBauteilIDfromProjectandPosition(String Project_name, String Position_name, String Bauteil_name) throws SQLException {
+		int id = 0;
+		Connection  con= databank.getInstance();
+		Statement st = con.createStatement();
+		String SQL = "select bauteil_id from bauteil, project, position where "
+				+ "bauteil_project_id= project_id and bauteil_position_id= position_id and "
+				+ "project_name='"+Project_name+"' and position_name='"+ Position_name+"' and bauteil_name = '"+Bauteil_name +"';";
+		ResultSet rs = st.executeQuery(SQL);
+		if(rs.next()) 	id= rs.getInt(1);
+
+		con.close();
+		return id;
 	}
 	
 	

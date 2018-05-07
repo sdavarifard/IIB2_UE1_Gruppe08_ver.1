@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.IOException;
+import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -51,11 +52,29 @@ public class Servlet_Nachtrag extends HttpServlet {
 		String VOB= req.getParameter("VOB");
 		String verursacher= req.getParameter("verursacher");
 		LocalDate frist = LocalDate.parse(req.getParameter("frist_datum"), DATEFORMATTER);
-
-		//n=Project_Manager.insertNewNachtrag(title, Datum, becshreibung, VOB, verursacher, frist, bauteiID);
+		String project_name = req.getParameter("selecetProject");
+		String position_name = req.getParameter("selecetPosition");
+		String bauteil_name = req.getParameter("selecetBauteil");
+		int bauteilID=0;
+		try {
+			bauteilID = Project_Manager.getBauteilIDfromProjectandPosition(project_name, position_name, bauteil_name);
+			n=Project_Manager.insertNewNachtrag(title, Datum, becshreibung, VOB, verursacher, frist, bauteilID);
+			Project_Manager.insertNewNachtragSQLTabele(n);
+		} catch (SQLException | ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		session.removeAttribute("myNachtrag");
+		session.removeAttribute("myNachtragTabele");
+		try {
+			session.setAttribute("myNachtrag", Project_Manager.getNachtrag(session.getAttribute("user").toString()));
+			session.setAttribute("myNachtragTabele", Project_Manager.getNachtragTabele(session.getAttribute("user").toString()));
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
-		
-		
+		res.sendRedirect("nachtrag.jsp");
 	}
 
 }

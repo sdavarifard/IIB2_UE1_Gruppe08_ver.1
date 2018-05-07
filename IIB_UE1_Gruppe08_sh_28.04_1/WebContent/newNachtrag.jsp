@@ -13,15 +13,7 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		<script>
-		var projectid = 0;
-				function getComboProject() {
-		    		var projectid =  selectObject.value;
-		    		projectid =  document.getElementById("project").value;
-		    		console.log(projectid);
-		    		//document.getElementById("input").value = projectid;
-				}
-		</script>
+		
 </head>
 <body>
 		
@@ -92,69 +84,38 @@
                                           
                                           		 
                                            <tr>
-                                            <td><div ><input type="text" name="becshreibung" value="" placeholder="Beschreibung"/></td>
-                                            <td><div ><input type="text" name="VOB" value="" placeholder="VOB"/></td>
-                                            <td><div ><input type="text" name="verursacher" value="" placeholder="Verursacher"/></td>
+                                            <td><input type="text" name="becshreibung" value="" placeholder="Beschreibung"/></td>
+                                            <td><input type="text" name="VOB" value="" placeholder="VOB"/></td>
+                                            <td><input type="text" name="verursacher" value="" placeholder="Verursacher"/></td>
                                           </tr>
-                                                                                     <tr>
-                                            <td><div >Frist: <input type="date" name="frist_datum" id="frist_datum" value="" placeholder="Frist" /></td>
-                                            <td colspan="2"><div >
-                                            
-											<div>
-												<div class="select-wrapper">
-													<select name="category" id="category">
-														<c:forEach items="${myPosition}" var="p">
-														    <c:forEach items="${myBauteil}" var="b">
-														       <option value="${b.getBauteil_id()}">Bauteil: ${b.getBauteil_name()} Position:${p.getPosition_name()}</option>
-														     </c:forEach>
-													     </c:forEach>
-													</select>
-												</div>
-											</div>
-										</div>
+                                          <tr>
+                                            <td>Frist: <input type="date" name="frist_datum" id="frist_datum" value="" placeholder="Frist" /></td>
+                                            <td colspan="2">
 										
                                             </td>
                                             
+                                           </tr>
                                            <tr>
-                                            <td>
-                                            	<select name="project" id="project" onchange="getComboProject()">
-                                            	<c:forEach items="${myProject}" var="p">
-                                            		<option value="${p.getProject_id()}">Selected Project: ${p.getProject_name()} </option>
-												</c:forEach>
-                                            	</select>	
-                                            </td>
-                                            <td>
-                                                <select>
-                                            		<option value="0">Select Position</option>
-                                            		                                            		<%
-                                            			try{
-                                            				Connection  con= databank.getInstance();
-                                            				Statement st = con.createStatement();
-                                            				String SQL= " select position_id, position_name, position_beschreibung from position,bauteil, project where position_id=bauteil_position_id and bauteil_project_id =;";                 
-                                            				PreparedStatement psm = con.prepareStatement(SQL);
-                                            				ResultSet rs = st.executeQuery(SQL);
-                                            				while(rs.next()) {
-                                            					%>
-                                            					<option value="<%=rs.getInt("position_id")%>"><%=rs.getString("position_name")%> , <%=rs.getString("position_beschreibung")%></option>
-                                            					<%
-                                            				}
-                                            				con.close();
-
-                                            				
-                                            			}catch(Exception e){
-                                            				e.printStackTrace();
-                                            			}
-                                            		
-                                            		
-                                            		%>
-                                            	</select>
-                                            </td>
-                                            <td>
-                                            	<select>
-                                            		<option value="0">Select Bauteil</option>
-                                            	</select>
-                                            </td>
-                                          </tr>
+                                           
+                                           <td><select name="selecetProject" id="ddl1" onchange="configureDDL2(this, document.getElementById('ddl2'), document.getElementById('ddl3'))">
+											    <option value="">Project</option>
+											    <option value="100B Hochhaus">100B Hochhaus </option>
+											    <option value="Darmstadt Brückenbau">Darmstadt Brückenbau</option>
+											    <option value="Schlosspark Ensemble">Schlosspark Ensemble</option>
+												<option value="FIFTYSEVEN">FIFTYSEVEN</option>
+											</select>
+                                           </td>
+                                           
+                                           
+                                           <td>
+                                           <select name="selecetPosition" id="ddl2" onchange="configureDDL3(document.getElementById('ddl1'), this, document.getElementById('ddl3'))">
+ 												 </select>
+											 </td>
+                                           <td> <select name="selecetBauteil" id="ddl3">
+ 													 </select>
+                                           </td>
+                    
+                                           </tr>
 											
                                         
                                         </table>
@@ -163,15 +124,61 @@
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
-												<input type="hidden" name="userId" value="${user.getUser_id()}">
-												<input type="hidden" name="myBauteil" value="${bauteil.getBauteil_id()}">
-												<input type="hidden" name="myPosition" value="${position.getPosition_id()}"> 
-													<li><input type="submit" value="Send Message" /></li>
+													<li><input type="submit" value="next" /></li>
 													<li><input type="reset" value="Reset" class="alt" /></li>
 												</ul>
 											</div>
 										</div>
 									</form>
+                                <script>
+									var myNestedVals = {
+											'100B Hochhaus': {
+												'Erd Geschoss': ['Wand', 'Fenster', 'Dach', 'Stuetz'],
+												'1 Geschoss': ['Wand', 'Fenster', 'Dach', 'Stuetz']
+												
+											},
+											'Darmstadt Brückenbau': {
+												'Überbau': ['Stahl','Beton'],
+												'Träger': ['Schalung']
+											},
+											'Schlosspark Ensemble': {
+												'Erd Geschoss': ['Wand', 'Fenster'],
+												'1 Geschoss': ['Wand', 'Fenster'],
+												'2 Geschoss': ['Wand', 'Fenster']
+											},
+											'FIFTYSEVEN': {
+												'4 Geschoss': ['Dach']
+											}
+										}
+							
+										function createOption(ddl, text, value) {
+											var opt = document.createElement('option');
+											opt.value = value;
+											opt.text = text;
+											ddl.options.add(opt);
+										}
+							
+										function createOptions(optionsArray, ddl) {
+											for (i = 0; i < optionsArray.length; i++) {
+												createOption(ddl, optionsArray[i], optionsArray[i]);
+											}
+										}
+							
+										function configureDDL2(ddl1, ddl2, ddl3) {
+											ddl2.options.length = 0;
+											ddl3.options.length = 0;
+											createOption(ddl2, "Position", "");
+											var ddl2keys = Object.keys(myNestedVals[ddl1.value]);
+											createOptions(ddl2keys, ddl2)
+										}
+							
+										function configureDDL3(ddl1, ddl2, ddl3) {
+											ddl3.options.length = 0;
+											createOption(ddl3, "Bauteil", "");
+											var ddl3keys = myNestedVals[ddl1.value][ddl2.value];
+											createOptions(ddl3keys, ddl3);
+										}
+							</script>
                                     					
 					
 				</section>
