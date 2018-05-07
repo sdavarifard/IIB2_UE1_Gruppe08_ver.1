@@ -41,12 +41,7 @@ public class Login_User extends HttpServlet {
 						session.setAttribute("login", "true");
 						session.setAttribute("user", User_Manager.getUser(username));
 						session.setAttribute("myProject", Project_Manager.getProject(username));
-						session.setAttribute("myBauteil", Project_Manager.getBauteil(username));
-						session.setAttribute("myPosition", Project_Manager.getPosition(username));
-						session.setAttribute("myNachtrag", Project_Manager.getNachtrag(username));
-						session.setAttribute("myPruefung", Project_Manager.getPruefung(username));
-						session.setAttribute("myKalkulation", Project_Manager.getNachtragskalkulation(username));
-						
+						session.setAttribute("username", username);
 						session.setAttribute("myNachtragTabele", Project_Manager.getNachtragTabele(username));
 						response.sendRedirect("home.jsp");
 						

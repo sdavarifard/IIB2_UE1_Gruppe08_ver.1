@@ -67,18 +67,15 @@
 									<h3>Nachtrag</h3>
                                     
 									<form method="post" action="./Servlet_Nachtrag">
-										<div class="row uniform 50%">
                                         <table >
                                         <tr>
-                                            <td colspan="2">
-                                            <div><input type="text" name="title" id="title" value="" placeholder="Title"/>
-											</div>
+                                            <td colspan="3">
+                                            <input type="text" name="title" id="title" value="" placeholder="Title"/>
                                             </td>
                                             
-                                            <td>
-                                            <div>
-												Datum: <input type="date" name="datum" id="datum" value="" placeholder="Datum" />
-											</div>
+                                            <td> <input type="text" name="datum" id="datum" value="" placeholder="Datum" onFocus="this.type='date'" />
+                                     
+											
                                             </td>
                                           </tr>
                                           
@@ -87,97 +84,71 @@
                                             <td><input type="text" name="becshreibung" value="" placeholder="Beschreibung"/></td>
                                             <td><input type="text" name="VOB" value="" placeholder="VOB"/></td>
                                             <td><input type="text" name="verursacher" value="" placeholder="Verursacher"/></td>
+                                            <td>
+                                            <input type="text" name="frist_datum" id="frist_datum" value="" placeholder="Frist" onFocus="this.type='date'"/></td>
                                           </tr>
-                                          <tr>
-                                            <td>Frist: <input type="date" name="frist_datum" id="frist_datum" value="" placeholder="Frist" /></td>
-                                            <td colspan="2">
-										
-                                            </td>
-                                            
-                                           </tr>
                                            <tr>
                                            
-                                           <td><select name="selecetProject" id="ddl1" onchange="configureDDL2(this, document.getElementById('ddl2'), document.getElementById('ddl3'))">
-											    <option value="">Project</option>
-											    <option value="100B Hochhaus">100B Hochhaus </option>
-											    <option value="Darmstadt Brückenbau">Darmstadt Brückenbau</option>
-											    <option value="Schlosspark Ensemble">Schlosspark Ensemble</option>
-												<option value="FIFTYSEVEN">FIFTYSEVEN</option>
-											</select>
+                                           <td colspan="2"><a class="button special" onclick="btnSelectProject()">Select Project</a>
                                            </td>
                                            
                                            
-                                           <td>
-                                           <select name="selecetPosition" id="ddl2" onchange="configureDDL3(document.getElementById('ddl1'), this, document.getElementById('ddl3'))">
- 												 </select>
-											 </td>
-                                           <td> <select name="selecetBauteil" id="ddl3">
- 													 </select>
-                                           </td>
+                                           <td><a class="button" onclick="btnSelectPosition()">Select Position</a></td>
+                                           <td><a class="button alt" onclick="btnSelectBauteil()">Select Bauteil</a> </td>
                     
                                            </tr>
+                                           
+                                           
+                                           <tr>
+                                           
+                                           <tr>
+                                           <td colspan="2"><input type="text" id="selectedProject" name="selectedProject" readonly="readonly">
+                                           </td>
+                                           
+                                           
+                                           <td><input type="text" id="selectedPosition" name="selectedPosition" readonly="readonly"></td>
+                                           <td><input type="text" id="selectedBauteil" name="selectedBauteil" readonly="readonly"></td>
+                                           </tr>
+                                          
+                                          <tr>
+                                            <td><input type="text" name="Menge" value="" placeholder="Menge"/></td>
+                                            <td><input type="text" name="Einheit" value="" placeholder="Einheit"/></td>
+                                            <td><input type="text" name="Preis_Einheit" value="" placeholder="Preis Einheit"/></td>
+                                            <td><input type="text" name="Preis_Gesamt" value="" placeholder="Preis Gesamt"/></td>
+                                          </tr>
+                                          
+                                          
 											
                                         
                                         </table>
-                                        
-										</div>
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
-													<li><input type="submit" value="next" /></li>
+													<li><input type="submit" value="submit" /></li>
 													<li><input type="reset" value="Reset" class="alt" /></li>
 												</ul>
 											</div>
 										</div>
 									</form>
                                 <script>
-									var myNestedVals = {
-											'100B Hochhaus': {
-												'Erd Geschoss': ['Wand', 'Fenster', 'Dach', 'Stuetz'],
-												'1 Geschoss': ['Wand', 'Fenster', 'Dach', 'Stuetz']
-												
-											},
-											'Darmstadt Brückenbau': {
-												'Überbau': ['Stahl','Beton'],
-												'Träger': ['Schalung']
-											},
-											'Schlosspark Ensemble': {
-												'Erd Geschoss': ['Wand', 'Fenster'],
-												'1 Geschoss': ['Wand', 'Fenster'],
-												'2 Geschoss': ['Wand', 'Fenster']
-											},
-											'FIFTYSEVEN': {
-												'4 Geschoss': ['Dach']
-											}
-										}
-							
-										function createOption(ddl, text, value) {
-											var opt = document.createElement('option');
-											opt.value = value;
-											opt.text = text;
-											ddl.options.add(opt);
-										}
-							
-										function createOptions(optionsArray, ddl) {
-											for (i = 0; i < optionsArray.length; i++) {
-												createOption(ddl, optionsArray[i], optionsArray[i]);
-											}
-										}
-							
-										function configureDDL2(ddl1, ddl2, ddl3) {
-											ddl2.options.length = 0;
-											ddl3.options.length = 0;
-											createOption(ddl2, "Position", "");
-											var ddl2keys = Object.keys(myNestedVals[ddl1.value]);
-											createOptions(ddl2keys, ddl2)
-										}
-							
-										function configureDDL3(ddl1, ddl2, ddl3) {
-											ddl3.options.length = 0;
-											createOption(ddl3, "Bauteil", "");
-											var ddl3keys = myNestedVals[ddl1.value][ddl2.value];
-											createOptions(ddl3keys, ddl3);
-										}
+										var popupProject;
+										function btnSelectProject() {
+									    	popupProject = window.open("project_select.jsp", "Popup", "width=700,height=400");
+									    	popupProject.focus();
+									        return false
+									    }
+										var popupPosition;
+										function btnSelectPosition() {
+											popupPosition = window.open("position_select.jsp", "Popup", "width=700,height=400");
+											popupPosition.focus();
+									        return false
+									    }
+										var popupBauteil;
+										function btnSelectBauteil() {
+											popupPosition = window.open("bauteil_select.jsp", "Popup", "width=700,height=400");
+											popupPosition.focus();
+									        return false
+									    }
 							</script>
                                     					
 					

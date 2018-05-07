@@ -112,34 +112,44 @@ public class Project_Manager {
 		execute(SQLInsertInto);
 	}
 	
-	public static Nachtragskalkulation insertNewNachtragskalkulation() {
+	public static Nachtragskalkulation insertNewNachtragskalkulation(double Menge, String Einheit, double Preis_Einheit, 
+			double Preis_Gesamt, int Nachtrag_id) {
 		Nachtragskalkulation n = new Nachtragskalkulation();
+		n.setKalkulation_menge(Menge);
+		n.setKalkulation_einheit(Einheit);
+		n.setKalkulation_preise_einheit(Preis_Einheit);
+		n.setKalkulation_preise_gesamt(Preis_Gesamt);
+		n.setKalkulation_nachtrag_id(Nachtrag_id);		
 		return n;
 	}
-	public static void insertNewNachtragSQLTabele(Nachtrag n) throws ClassNotFoundException, SQLException {
+	public static void insertNewNachtragKalkulationSQLTabele(Nachtragskalkulation n) throws ClassNotFoundException, SQLException {
 		String SQLInsertInto="";
-		SQLInsertInto=" insert into nachtrag (nachtrag_titel, nachtrag_datum, nachtrag_beschreibung, "
-				+ "nachtrag_vob, nachtrag_verursacher, nachtrag_frist, nachtrag_bauteil_id) values"
-				+ " ('"+ n.getNachtrag_titel()+"','"+ n.getNachtrag_datum()+"','"+n.getNachtrag_beschreibung()+"',"
-				+ "'"+n.getNachtrag_vob()+"','"+n.getNachtrag_verursacher()+"','"+n.getNachtrag_frist()+"',"+n.getNachtrag_bauteil_id()+");";
+		SQLInsertInto="   insert into kalkulation (kalkulation_menge, kalkulation_einheit,kalkulation_preis_einheit,kalkulation_preis_gesamt,kalkulation_nachtrag_id)"
+				+ " values ("+n.getKalkulation_menge()+", '"+n.getKalkulation_einheit()+"',"+n.getKalkulation_preise_einheit()+","+n.getKalkulation_preise_gesamt()+","+n.getKalkulation_nachtrag_id()+");";
 		execute(SQLInsertInto);
 	}
 	
-	public static int getBauteilIDfromProjectandPosition(String Project_name, String Position_name, String Bauteil_name) throws SQLException {
-		int id = 0;
+	public static List<Bauteil> getBauteilfromProjectandPosition(int Project_id, int Position_id) throws SQLException {
+		List<Bauteil> l = new ArrayList<Bauteil>();
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
-		String SQL = "select bauteil_id from bauteil, project, position where "
+		String SQL= "select bauteil_id, bauteil_name from bauteil, project, position where "
 				+ "bauteil_project_id= project_id and bauteil_position_id= position_id and "
-				+ "project_name='"+Project_name+"' and position_name='"+ Position_name+"' and bauteil_name = '"+Bauteil_name +"';";
+				+ "project_id="+Project_id+" and position_id="+ Position_id+" ;";
 		ResultSet rs = st.executeQuery(SQL);
-		if(rs.next()) 	id= rs.getInt(1);
-
+		while(rs.next()) {
+			Bauteil m = new Bauteil();
+			m.setBauteil_id(rs.getInt(1));
+			m.setBauteil_name(rs.getString(2));
+			m.setBauteil_position_id(Position_id);
+			m.setBauteil_project_id(Project_id);
+			l.add(m);
+		}
 		con.close();
-		return id;
+		
+		return l;
 	}
-	
-	
+
 	public static void insertUserHatProject(int userID, int projectid, String Auftragnehmer) 
 			throws ClassNotFoundException, SQLException {
 		String SQL3="";
@@ -204,48 +214,13 @@ public class Project_Manager {
 		
 		return lBauteil;
 	}
-	/*
-	public static int getBauteilIDfromName(String name, String projectName, String position)
-			throws SQLException {
-		int id = 0;
-		Connection  con= databank.getInstance();
-		Statement st = con.createStatement();
-		int projectID= getProjectIdfromName(projectName);
-		int positionID=get
-		String SQLGetId = " select bauteil_id from bauteil where project_name='"+name +"';";
-		ResultSet rs = st.executeQuery(SQLGetId);
-		if(rs.next()) 	id= rs.getInt("project_id");
 
-		con.close();
-		return id;
-	}*/
-	public static List<Position> getPosition(String loginUsername) throws SQLException{
-		List<Position> lPosition = new ArrayList<Position>();
-		Connection  con= databank.getInstance();
-		Statement st = con.createStatement();
-		String SQL= " select position_id, position_name, position_beschreibung  from project as p," + 
-				" user as u, user_hat_project as uhp , bauteil as b, position" + 
-				" where position_id=b.bauteil_position_id and b.bauteil_project_id = p.project_id and" + 
-				" p.project_id=uhp.user_hat_project_project_id and " + 
-				" uhp.user_hat_project_user_id = u.user_id and u.user_username= '"+loginUsername+"';";
-		ResultSet rs = st.executeQuery(SQL);
-		while(rs.next()) {
-			Position myPosition = new Position();
-			myPosition.setPosition_id(rs.getInt(1));
-			myPosition.setPosition_name(rs.getString(2));
-			myPosition.setPosition_beschreibung(rs.getString(3));
-			lPosition.add(myPosition);
-		}
-		con.close();
-		
-		return lPosition;
-	}
 	public static List<Position> getPositionfromProject(int projectID) throws SQLException{
 		List<Position> lPosition = new ArrayList<Position>();
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
 		String SQL= "select position_id, position_name, position_beschreibung from position,bauteil,"
-				+ " project where position_id=bauteil_position_id and bauteil_project_id ="+projectID+" group by position_id ;";
+				+ " project where position_id=bauteil_position_id and bauteil_project_id=project_id and project_id = "+projectID+" group by position_id ;";
 		ResultSet rs = st.executeQuery(SQL);
 		while(rs.next()) {
 			Position myPosition = new Position();
@@ -258,21 +233,6 @@ public class Project_Manager {
 		
 		return lPosition;
 	}
-/*
-	public static int getPositionIdfromName(String name) throws SQLException {
-		String SQLGetId="";
-		Connection  con= databank.getInstance();
-		Statement st = con.createStatement();
-		SQLGetId = " select position_id from position, bauteil, project"
-				+ " where project_id = bauteil_project_id and bauteil_position_id = position_id and"
-				+ "position_name = '"+name+"';";
-		ResultSet rs = st.executeQuery(SQLGetId);
-		int id = 0;
-		if(rs.next()) 	id= rs.getInt("project_id");
-
-		con.close();
-		return id;
-	}*/
 	
 	public static List<Nachtrag> getNachtrag(String loginUsername) throws SQLException{
 		List<Nachtrag> lNachtrag = new ArrayList<Nachtrag>();
@@ -302,6 +262,19 @@ public class Project_Manager {
 		return lNachtrag;
 	}
 	
+	public static int getNachtragIdfromName(String name) throws SQLException {
+		String SQLGetId="";
+		Connection  con= databank.getInstance();
+		Statement st = con.createStatement();
+		SQLGetId = " select nachtrag_id from nachtrag where nachtrag_titel='"+name +"';";
+		ResultSet rs = st.executeQuery(SQLGetId);
+		int id = 0;
+		if(rs.next()) 	id= rs.getInt(1);
+
+		con.close();
+		return id;
+	}
+	
 	public static List<Pruefung> getPruefung(String loginUsername) throws SQLException{
 		List<Pruefung> lp = new ArrayList<Pruefung>();
 		Connection  con= databank.getInstance();
@@ -326,7 +299,16 @@ public class Project_Manager {
 		return lp;
 	}
 	
-	public static List<Nachtragskalkulation> getNachtragskalkulation(String loginUsername) throws SQLException{
+	public static void setDefaultPruefung(LocalDate datum, int nachtragID) throws SQLException, ClassNotFoundException{
+		String SQLInsertInto="";
+		SQLInsertInto="insert into pruefung (pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id)"
+				+ " values ('Nicht Bewertet','"+datum+"',"+nachtragID+");";
+		execute(SQLInsertInto);
+	}
+	 
+	
+	
+		public static List<Nachtragskalkulation> getNachtragskalkulation(String loginUsername) throws SQLException{
 		List<Nachtragskalkulation> ln = new ArrayList<Nachtragskalkulation>();
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
@@ -342,7 +324,7 @@ public class Project_Manager {
 			n.setKalkulation_id(rs.getInt(1));
 			n.setKalkulation_menge(rs.getDouble(2));
 			n.setKalkulation_einheit(rs.getString(3));
-			n.setKalkulation_preise_einheit(rs.getString(4));
+			n.setKalkulation_preise_einheit(rs.getDouble(4));
 			n.setKalkulation_preise_gesamt(rs.getDouble(5));
 			n.setKalkulation_nachtrag_id(rs.getInt(6));
 			ln.add(n);

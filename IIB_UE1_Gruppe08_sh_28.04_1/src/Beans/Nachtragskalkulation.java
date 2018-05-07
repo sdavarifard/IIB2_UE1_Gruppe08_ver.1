@@ -4,14 +4,14 @@ public class Nachtragskalkulation {
   private int kalkulation_id;
   private double kalkulation_menge;
   private String kalkulation_einheit;
-  private String kalkulation_preise_einheit;
+  private double kalkulation_preise_einheit;
   private double kalkulation_prise_gesamt;
   private int kalkulation_nachtrag_id;
 	public Nachtragskalkulation() {
 		// TODO Auto-generated constructor stub
 	}
 	public Nachtragskalkulation(int kalkulation_id, int kalkulation_menge, String kalkulation_einheit,
-			String kalkulation_preise_einheit, double kalkulation_prise_gesant) {
+			double kalkulation_preise_einheit, double kalkulation_prise_gesant) {
 		super();
 		this.kalkulation_id = kalkulation_id;
 		this.kalkulation_menge = kalkulation_menge;
@@ -37,11 +37,11 @@ public class Nachtragskalkulation {
 	public void setKalkulation_einheit(String kalkulation_einheit) {
 		this.kalkulation_einheit = kalkulation_einheit;
 	}
-	public String getKalkulation_preise_einheit() {
+	public double getKalkulation_preise_einheit() {
 		return kalkulation_preise_einheit;
 	}
-	public void setKalkulation_preise_einheit(String kalkulation_preise_einheit) {
-		this.kalkulation_preise_einheit = kalkulation_preise_einheit;
+	public void setKalkulation_preise_einheit(double preis_Einheit) {
+		this.kalkulation_preise_einheit = preis_Einheit;
 	}
 	public double getKalkulation_preise_gesamt() {
 		return kalkulation_prise_gesamt;
