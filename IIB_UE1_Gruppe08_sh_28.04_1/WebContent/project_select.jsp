@@ -11,11 +11,7 @@
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 <title>Select Project</title>
 	<script type="text/javascript">
-	function closeSelf(){
-	       document.forms['selectForm'].submit();
-	       window.close();
-	    
-	}
+	
 	function SetName() {
 	    if (window.opener != null && !window.opener.closed) {
 	        var txtName = window.opener.document.getElementById("selectedProject");

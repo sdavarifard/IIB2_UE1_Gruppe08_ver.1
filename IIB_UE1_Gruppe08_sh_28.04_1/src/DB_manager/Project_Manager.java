@@ -367,5 +367,15 @@ public class Project_Manager {
 		
 		return l;
 	}
-
+	
+	public static ArrayList<Nachtrag> NachtragFrist(List<Nachtrag> list) {
+		ArrayList <Nachtrag> mynachtrag=new ArrayList<Nachtrag>();
+		for(Nachtrag nachtrag:list) {
+			int date=nachtrag.getNachtrag_frist().getDayOfYear()-LocalDate.now().getDayOfYear();
+			if(date<30)
+				mynachtrag.add(nachtrag);
+		}
+		
+		return mynachtrag;
+	}
 }

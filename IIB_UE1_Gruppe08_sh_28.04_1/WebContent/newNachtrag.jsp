@@ -73,7 +73,7 @@
                                             <input type="text" name="title" id="title" value="" placeholder="Title"/>
                                             </td>
                                             
-                                            <td> <input type="text" name="datum" id="datum" value="" placeholder="Datum" onFocus="this.type='date'" />
+                                            <td> <input type="text" name="datum" id="datum" value="" placeholder="Datum" onchange="dateControll();" onFocus="this.type='date'" />
                                      
 											
                                             </td>
@@ -85,7 +85,7 @@
                                             <td><input type="text" name="VOB" value="" placeholder="VOB"/></td>
                                             <td><input type="text" name="verursacher" value="" placeholder="Verursacher"/></td>
                                             <td>
-                                            <input type="text" name="frist_datum" id="frist_datum" value="" placeholder="Frist" onFocus="this.type='date'"/></td>
+                                            <input type="text" name="frist_datum" id="frist_datum" value="" placeholder="Frist" onchange="dateControll();"  onFocus="this.type='date'"/></td>
                                           </tr>
                                            <tr>
                                            
@@ -149,6 +149,18 @@
 											popupPosition.focus();
 									        return false
 									    }
+										
+										function dateControll(){
+											var StartDate= document.getElementById('datum').value;
+											  var EndDate= document.getElementById('frist_datum').value;
+											  var eDate = new Date(EndDate);
+											  var sDate = new Date(StartDate);
+											  if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+												{
+												alert("Bitte Controllieren Sie! Frist Datum muss nach Nachtragdatum sein..");
+												return false;
+												}
+										}
 							</script>
                                     					
 					

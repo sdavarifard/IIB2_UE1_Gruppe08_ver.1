@@ -99,7 +99,7 @@
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
-												<input type="hidden" name="userId" value="${user.getUser_id()}"> 
+													<input type="hidden" name="userId" value="${user.getUser_id()}"> 
 													<li><input type="submit" value="Send Message" /></li>
 													<li><input type="reset" value="Reset" class="alt" /></li>
 												</ul>
@@ -113,6 +113,19 @@
 						</div>
 					</div>
 				</section>
+				<script type="text/javascript">
+				function dateControll(){
+					var StartDate= document.getElementById('adate').value;
+					  var EndDate= document.getElementById('edate').value;
+					  var eDate = new Date(EndDate);
+					  var sDate = new Date(StartDate);
+					  if(StartDate!= '' && StartDate!= '' && sDate> eDate)
+						{
+						alert("Bitte Controllieren Sie! End Datum muss nach Anfagsdatum sein..");
+						return false;
+						}
+				}
+				</script>
 
 			<!-- Footer -->
 				<footer id="footer">

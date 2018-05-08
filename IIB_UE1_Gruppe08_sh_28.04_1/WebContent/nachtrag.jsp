@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-        <%@ page import="Beans.Project"  %>
+        <%@ page import="Beans.*"  %>
     <%@ page import ="java.util.ArrayList"%>
 <%@ page import ="java.util.List"%>
     <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
@@ -8,13 +8,16 @@
 <html>
 <head>
 <title>Nachtrag</title>
+
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
+		<input type="hidden" id="userTaetigkeit" name="userTaetigkeit" value="${user.getUser_taetigkeit()}">
+
 </head>
-<body>
+<body onload="btnHide()">
 
 		<div id="page-wrapper">
 
@@ -94,11 +97,13 @@
 										</table>
 									</div>
 									<ul class="actions">
-										<li><a href="newNachtrag.jsp" class="button special">neuer Nachtrag</a></li>
-										<li><a href="#" class="button">Nachtrag bearbeiten</a></li>
+									
+									<li><a href="newNachtrag.jsp" id="btnNewNachtrag" class="button special">neuer Nachtrag</a></li>
+									<li><a href="#" id="btnEditNachtrag" class="button">Nachtrag bearbeiten</a></li>
+									
 										<li><a href="#" class="button alt">Zuruck</a></li>
 									</ul>
-								</section>
+								</section> 
 				</section>
 
 			<!-- Footer -->
@@ -126,7 +131,24 @@
 			<script src="assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="assets/js/main.js"></script>
+			
+			
+		<script type="text/javascript">
+		 function btnHide(){
+				var elt = document.getElementById("userTaetigkeit").value;
+				
+				var hlink1 = document.getElementById("btnNewNachtrag");
+				var hlink2 = document.getElementById("btnEditNachtrag");
+				if(elt!="Bauleiter"){
+					hlink1.href = "#";
+					hlink1.className = "button special disabled";
 
+					hlink2.href = "#";
+					hlink2.className = "button special disabled"; 
+				}
+				
+			}
+		</script>
 	
 
 </body>

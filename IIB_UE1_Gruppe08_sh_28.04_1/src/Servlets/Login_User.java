@@ -42,7 +42,9 @@ public class Login_User extends HttpServlet {
 						session.setAttribute("user", User_Manager.getUser(username));
 						session.setAttribute("myProject", Project_Manager.getProject(username));
 						session.setAttribute("username", username);
+						
 						session.setAttribute("myNachtragTabele", Project_Manager.getNachtragTabele(username));
+						session.setAttribute("mynachtrag",Project_Manager.NachtragFrist( Project_Manager.getNachtrag(username)));
 						response.sendRedirect("home.jsp");
 						
 						url = "test.jsp";

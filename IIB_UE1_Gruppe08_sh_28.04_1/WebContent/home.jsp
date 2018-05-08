@@ -68,6 +68,37 @@
 							for doing</h2>
 							<p>test for hier</p>
 						</header>
+						<h3>Nachtrag mit FrsitDatum weniger als 30 Tag</h3>
+
+									<div class="table-wrapper"  >
+										<table>
+											<thead >
+												<tr>
+													<th>N0achtrag Titel</th>
+													<th>Nachtrag Datum</th>
+													<th  bgcolor="#FF0000">Frist</th>
+                                                    <th>VOB Kl.</th>
+                                                    <th>Beschreibung</th>
+                                                    <th>Verursacher</th>
+                                                   
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${mynachtrag}" var="mn">
+												<tr>
+													<td>${mn.getNachtrag_titel()}</td>
+													<td>${mn.getNachtrag_datum()}</td>
+													<td bgcolor="#FF0000" >${mn.getNachtrag_frist()}</td>
+													<td>${mn.getNachtrag_vob()}</td>
+													<td>${mn.getNachtrag_beschreibung()}</td>
+													<td>${mn.getNachtrag_verursacher()}</td>
+													
+													
+												</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
 					</section>
 
 					<section class="box special features">
