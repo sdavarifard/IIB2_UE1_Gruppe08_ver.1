@@ -68,7 +68,7 @@
 													<th>Nachtrag Datum</th>
 													<th>Frist</th>
                                                     <th>Menge</th>
-                                                    <th>Preis($)</th>
+                                                    <th>Preis &euro;</th>
                                                     <th>VOB Kl.</th>
                                                     <th>Beschreibung</th>
                                                     <th>Verursacher</th>
@@ -99,7 +99,7 @@
 									<ul class="actions">
 									
 									<li><a href="newNachtrag.jsp" id="btnNewNachtrag" class="button special">neuer Nachtrag</a></li>
-									<li><a href="#" id="btnEditNachtrag" class="button">Nachtrag bearbeiten</a></li>
+									<li><a href="editNachtrag.jsp" id="btnEditNachtrag" class="button">Nachtrag bearbeiten</a></li>
 									
 										<li><a href="#" class="button alt">Zuruck</a></li>
 									</ul>
@@ -146,8 +146,21 @@
 					hlink2.href = "#";
 					hlink2.className = "button special disabled"; 
 				}
-				
-			}
+		 }
+				var popupNachtrag;
+				function btnEditNachtrag() {
+					popupNachtrag = window.open("nachtrag_select.jsp", "Popup", "width=700,height=400");
+					popupNachtrag.focus();
+			        return false
+			    }
+				var popupNachtrag;
+				function btnSelectNachtrag() {
+					popupNachtrag = window.open("nachtrag_select.jsp", "Popup", "width=700,height=400");
+					popupNachtrag.focus();
+					location.reload();
+			        return false
+			    }
+			
 		</script>
 	
 

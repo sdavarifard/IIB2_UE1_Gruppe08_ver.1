@@ -12,9 +12,18 @@
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
-		
+				<script type="text/javascript">
+		 function hide(){
+				var elt = document.getElementById("userTaetigkeit").value;
+				
+				if(elt=="Bauleiter"){
+					document.getElementById("divNactragFrist").style.display = "none";
+				}
+				
+			}
+		</script>
 </head>
-<body class="landing">
+<body class="landing" onload="hide()">
 			    <%
 			    	User myUser  = (User) session.getAttribute("user");
 				%>
@@ -68,6 +77,7 @@
 							for doing</h2>
 							<p>test for hier</p>
 						</header>
+						<div id="divNactragFrist">
 						<h3>Nachtrag mit FrsitDatum weniger als 30 Tag</h3>
 
 									<div class="table-wrapper"  >
@@ -99,8 +109,9 @@
 											</tbody>
 										</table>
 									</div>
+						</div>
 					</section>
-
+					<input type="hidden" id="userTaetigkeit" name="userTaetigkeit" value="${user.getUser_taetigkeit()}">
 					<section class="box special features">
 						<div class="features-row">
 							<section>

@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import Beans.Project;
 import DB_manager.Project_Manager;
 
 /**
@@ -30,13 +31,16 @@ public class projectSelection extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		int selectedProject = Integer.parseInt(request.getParameter("selectedProject"));
 		HttpSession session = request.getSession(true);
+		Project p = new Project();
 		try {
 			session.setAttribute("positionList", Project_Manager.getPositionfromProject(selectedProject));
+			//p = Project_Manager.getProjectfromProjectID(selectedProject);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		session.setAttribute("selectedProjectID",selectedProject);
+		//session.setAttribute("selectedProjectForNachtrag", p);
 		response.sendRedirect("closeOnLoad.jsp");
 		
 				

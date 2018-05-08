@@ -25,11 +25,11 @@ public class Servlet_Nchtragskalkulation extends HttpServlet {
 		Nachtragskalkulation nk = new Nachtragskalkulation();
 		HttpSession session = req.getSession(true);
 		int nachtragID = (int) session.getAttribute("nachtragID");
-		String einheit =(String) session.getAttribute("Kal_Einheit") ;
-		double menge = (double) session.getAttribute("Kal_Menge");
-		double preisEin=(double) session.getAttribute("Kal_Preis_Einheit");
-		double preisGes= (double) session.getAttribute("Kal_Preis_Gesamt");
-		LocalDate datum = (LocalDate) session.getAttribute("datum");
+		String einheit =(String) session.getAttribute("Kal_Einheit_EditNachtrag") ;
+		double menge = (double) session.getAttribute("Kal_Menge_EditNachtrag");
+		double preisEin=(double) session.getAttribute("Kal_Preis_Einheit_EditNachtrag");
+		double preisGes= (double) session.getAttribute("Kal_Preis_Gesamt_EditNachtrag");
+		LocalDate datum = (LocalDate) session.getAttribute("datum_editNachtrag");
 		try {
 			Project_Manager.setDefaultPruefung(datum, nachtragID);
 		} catch (ClassNotFoundException | SQLException e) {

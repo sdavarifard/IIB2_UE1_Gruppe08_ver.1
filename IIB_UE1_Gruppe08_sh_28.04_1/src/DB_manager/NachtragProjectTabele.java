@@ -1,8 +1,9 @@
-package Beans;
+package DB_manager;
 
 import java.time.LocalDate;
 
 public class NachtragProjectTabele {
+	private int nachtrag_id;
 	private String project_name;
 	private String bauteil_name;
 	private LocalDate nachtrag_datum;
@@ -87,6 +88,12 @@ public class NachtragProjectTabele {
 	}
 	public void setPruefung_datum(LocalDate pruefung_datum) {
 		this.pruefung_datum = pruefung_datum;
+	}
+	public int getNachtrag_id() {
+		return nachtrag_id;
+	}
+	public void setNachtrag_id(int nachtrag_id) {
+		this.nachtrag_id = nachtrag_id;
 	}
 
 }
