@@ -32,6 +32,7 @@
 							<!-- Form -->
 								<section class="box">
 									<h3>Form</h3>
+									
 									<form method="post" action="Login_User">
 										<div class="row uniform 50%">
 											<div class="6u 12u(mobilep)">
@@ -40,26 +41,20 @@
 											<div class="6u 12u(mobilep)">
 												<input type="password" name="password" value="" placeholder="Password" />
 											</div>
-                                            
-										</div>
-										<div class="row uniform 50%">
-											<div class="12u">
-												<div class="select-wrapper">
-													<select name="taetigkeit">
-														<option>Bauleiter</option>
-														<option>Nachtragmanager</option>
-													</select>
-												</div>
-											</div>
-										</div>
+                                            </div>
+                                            <br>
+                                            <input type="text" id="Fehler" name="Fehler" style="color: red;" value="${FehlerLogin}">
+										
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
 													<li><input type="submit" value="Login" /></li>
 													<li><input type="reset" value="Reset" class="alt" /></li>
+													<li></li>
 												</ul>
 											</div>
 										</div>
+										
 									</form>
 
 									<hr />

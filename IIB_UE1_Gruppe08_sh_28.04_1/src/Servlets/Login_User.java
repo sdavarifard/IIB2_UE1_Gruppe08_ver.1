@@ -1,6 +1,7 @@
 package Servlets;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.sql.SQLException;
 
 import javax.servlet.RequestDispatcher;
@@ -22,21 +23,27 @@ public class Login_User extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
+		String err = "";
 		HttpSession session = request.getSession(true);
+		
 		String username = request.getParameter("login");
 		String password = request.getParameter("password");
-		String fachrolle = request.getParameter("taetigkeit");
-		String err = "";
+		
 		if(username.equals("") || password.equals("")) {
-			err += "Bitte geben Username und Password";
+			//out.println("<meta http-equiv='refresh' content='3;URL=index.html'>");//redirects after 3 seconds
+			   //out.println("<p style='color:red;'>Bitte Füllen Username und Password!!</p>");
+			err = "Bitte Füllen Username und Password!!";
+			session.setAttribute("FehlerLogin", err);
+			response.sendRedirect("index.jsp");
 		}else {
 		
 			try {
-				String url = "index.html";
-				boolean status = User_Manager.loginVerify(username, password,fachrolle);
-				if(status=false)err+="username oder passqord ist Falsch";
-					if(err.length()==0) {
+				boolean status = User_Manager.loginVerify(username, password);
+				if(status==false) {
+					err = "User oder Password FALSCH!!";
+					session.setAttribute("FehlerLogin", err);
+					response.sendRedirect("index.jsp");
+				}if(err.length()==0) {
 						
 						session.setAttribute("login", "true");
 						session.setAttribute("user", User_Manager.getUser(username));
@@ -47,11 +54,6 @@ public class Login_User extends HttpServlet {
 						session.setAttribute("mynachtrag",Project_Manager.NachtragFrist( Project_Manager.getNachtrag(username)));
 						response.sendRedirect("home.jsp");
 						
-						url = "test.jsp";
-					}else {
-						url = "index.html";
-						RequestDispatcher rd = getServletContext().getRequestDispatcher(url);
-						rd.forward(request, response);
 					}
 				} 
 				catch (SQLException e) {
@@ -61,7 +63,6 @@ public class Login_User extends HttpServlet {
 			
 			
 			}
-		
 		}
 }
 

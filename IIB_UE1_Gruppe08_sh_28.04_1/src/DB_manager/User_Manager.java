@@ -12,11 +12,11 @@ import DB_connect.databank;
 
 public class User_Manager {
 	
-	public static boolean loginVerify(String username, String password, String fachrolle) throws SQLException {
+	public static boolean loginVerify(String username, String password) throws SQLException {
 		boolean status = false;
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
-		String SQL_login="Select user_username, user_password, user_taetigkeit from user where user_username= '"+username+"' and user_password= '"+password+"' and user_taetigkeit = '"+fachrolle+"';";
+		String SQL_login="Select user_username, user_password, user_taetigkeit from user where user_username= '"+username+"' and user_password= '"+password+"';";
 		ResultSet rs = st.executeQuery(SQL_login);
 		status = rs.next();
 		return status;

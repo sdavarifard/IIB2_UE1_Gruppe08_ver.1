@@ -6,6 +6,7 @@ public class Pruefung {
   private int pruefung_id;
   private String pruefung_ergebnis;
   private LocalDate pruefung_datum;
+  private String pruefung_beschreibung;
   
   private int pruefung_nachtrag_id;
   
@@ -37,6 +38,12 @@ public void setPruefung_nachtrag_id(int pruefung_nachtrag_id) {
 	}
 	public void setPruefung_ergebnis(String pruefung_ergebnis) {
 		this.pruefung_ergebnis = pruefung_ergebnis;
+	}
+	public String getPruefung_beschreibung() {
+		return pruefung_beschreibung;
+	}
+	public void setPruefung_beschreibung(String pruefung_beschreibung) {
+		this.pruefung_beschreibung = pruefung_beschreibung;
 	}
 
 }

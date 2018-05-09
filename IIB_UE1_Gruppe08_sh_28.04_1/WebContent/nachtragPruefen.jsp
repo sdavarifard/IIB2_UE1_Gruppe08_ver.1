@@ -7,7 +7,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>New Nachtrag</title>
+<title>Prüfen</title>
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1" />
 		<!--[if lte IE 8]><script src="assets/js/ie/html5shiv.js"></script><![endif]-->
@@ -49,8 +49,7 @@
 			<!-- Main -->
 				<section id="main" class="container">
 					<header>
-						<h2>Elements</h2>
-						<p>Just an assorted selection of elements.</p>
+						<h2>Nachtrag Prüfen</h2>
 					</header>
 					<div class="row">
 						<div class="12u">
@@ -64,7 +63,6 @@
 
 							<!-- Form -->
 								<section class="box">
-									<h3>Nachtrag bearbeiten</h3>
                                     <ul class="actions fit">
 										<li>Select Nachtrag:</li>
 										<li><a onclick="btnSelectNachtrag()" class="button fit">Select Nachtrag</a></li>
@@ -72,25 +70,26 @@
 										
 									</ul>
 									
-									<form method="post" action="./Servlet_EditNachtrag">
+									<form method="post" action="./Servlet_Pruefung">
 									
                                         <table >
+                                        <h1>Nachtrag Information</h1>
                                         <tr>
                                             <td colspan="3">
-                                            <input type="text" name="title" id="title" value="" placeholder="Title"/>
+                                            <input type="text" name="title" id="title" value="" placeholder="Title" readonly="readonly"/>
                                             </td>
                                             
-                                            <td> <input type="text" name="datum" id="datum" value="" placeholder="Datum" onchange="dateControll();" onFocus="this.type='date'" />
+                                            <td> <input type="text" name="datum" id="datum" value="" placeholder="Datum" readonly="readonly" />
                                      		</td>
                                           </tr>
                                           
                                           		 
                                            <tr>
-                                            <td><input type="text" id="becshreibung" name="becshreibung" value="" placeholder="Beschreibung"/></td>
-                                            <td><input type="text" id="VOB" name="VOB" value="" placeholder="VOB"/></td>
-                                            <td><input type="text" id="verursacher" name="verursacher" value="" placeholder="Verursacher"/></td>
+                                            <td><input type="text" id="becshreibung" name="becshreibung" value="" placeholder="Beschreibung" readonly="readonly"/></td>
+                                            <td><input type="text" id="VOB" name="VOB" value="" placeholder="VOB" readonly="readonly"/></td>
+                                            <td><input type="text" id="verursacher" name="verursacher" value="" placeholder="Verursacher" readonly="readonly"/></td>
                                             <td>
-                                            <input type="text" id="frist_datum" name="frist_datum" id="frist_datum" value="" placeholder="Frist" onchange="dateControll();"  onFocus="this.type='date'"/></td>
+                                            <input type="text" id="frist_datum" name="frist_datum" id="frist_datum" value="" placeholder="Frist" readonly="readonly"/></td>
                                           
                                            <tr>
                                            
@@ -104,21 +103,33 @@
                                            </tr>
                                           
                                           <tr>
-                                            <td><input type="text" id="Menge" name="Menge" value="" placeholder="Menge"/></td>
-                                            <td><input type="text" id="Einheit" name="Einheit" value="" placeholder="Einheit"/></td>
-                                            <td><input type="text" id="Preis_Einheit" name="Preis_Einheit" value="" placeholder="Preis Einheit"/></td>
-                                            <td><input type="text" id="Preis_Gesamt" name="Preis_Gesamt" value="" placeholder="Preis Gesamt"/></td>
+                                            <td><input type="text" id="Menge" name="Menge" value="" placeholder="Menge" readonly="readonly"/></td>
+                                            <td><input type="text" id="Einheit" name="Einheit" value="" placeholder="Einheit" readonly="readonly"/></td>
+                                            <td><input type="text" id="Preis_Einheit" name="Preis_Einheit" value="" placeholder="Preis Einheit" readonly="readonly"/></td>
+                                            <td><input type="text" id="Preis_Gesamt" name="Preis_Gesamt" value="" placeholder="Preis Gesamt" readonly="readonly"/></td>
                                           </tr>
                                           
                                           
 											
                                         
                                         </table>
+                                        
+                                        <p></p>
+                                        <h1>Prüfung Formular</h1>
+                                        <table>
+                                        <tr>
+                                            <td><input type="text" id="pruefungDatum" name="pruefungDatum" value="" placeholder="Datum" onFocus="this.type='date'"/></td>
+                                            
+                                             <td><input type="text" id="pruefungErgebnis" name="pruefungErgebnis" value="" placeholder="Ergebnis"/></td>
+                                           
+                                            <td><input type="text" id="pruefungBeschreibung" name="pruefungBeschreibung" value="" placeholder="Beschreibung"/></td>
+                                          </tr>
+                                        
+                                        </table>
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
 													<li><input type="submit" value="submit" /></li>
-													<li><input type="reset" value="Reset" class="alt" /></li>
 												</ul>
 											</div>
 										</div>
@@ -136,6 +147,9 @@
 									<input type="hidden" id="getProject_name" value="${selectedProjectforEditNachtrag.getProject_name()}">
 									<input type="hidden" id="getPosition_name" value="${selectedPositionforEditNachtrag.getPosition_name()}">
 									<input type="hidden" id="getBauteil_name" value="${selectedBauteilforEditNachtrag.getBauteil_name()}">
+									<input type="hidden" id="getPruefung_datum" value="${selectedPruefung.getPruefung_datum()}">
+									<input type="hidden" id="getPruefung_ergebnis" value="${selectedPruefung.getPruefung_ergebnis()}">
+									<input type="hidden" id="getPruefung_beschreibung" value="${selectedPruefung.getPruefung_beschreibung()}">
                                 <script>
                                 	
                                 		function defaultValue() {
@@ -152,29 +166,15 @@
                                 			document.getElementById("Einheit").defaultValue =document.getElementById("getKalkulation_einheit").value;
                                 			document.getElementById("Preis_Einheit").defaultValue =document.getElementById("getKalkulation_preise_einheit").value;
                                 			document.getElementById("Preis_Gesamt").defaultValue =document.getElementById("getKalkulation_preise_gesamt").value;
+                                			document.getElementById("pruefungDatum").defaultValue =document.getElementById("getPruefung_datum").value;
+                                			document.getElementById("pruefungErgebnis").defaultValue =document.getElementById("getPruefung_ergebnis").value;
+                                			document.getElementById("pruefungBeschreibung").defaultValue =document.getElementById("getPruefung_beschreibung").value;
+                                			
+                                			var d = new Date();
+                                			//document.getElementById('pruefungDatum').value= Date();
 		                                }
                                 
                                 
-                                
-                                
-										var popupProject;
-										function btnSelectProject() {
-									    	popupProject = window.open("project_select.jsp", "Popup", "width=700,height=400");
-									    	popupProject.focus();
-									        return false
-									    }
-										var popupPosition;
-										function btnSelectPosition() {
-											popupPosition = window.open("position_select.jsp", "Popup", "width=700,height=400");
-											popupPosition.focus();
-									        return false
-									    }
-										var popupBauteil;
-										function btnSelectBauteil() {
-											popupPosition = window.open("bauteil_select.jsp", "Popup", "width=700,height=400");
-											popupPosition.focus();
-									        return false
-									    }
 										
 										function dateControll(){
 											var StartDate= document.getElementById('datum').value;

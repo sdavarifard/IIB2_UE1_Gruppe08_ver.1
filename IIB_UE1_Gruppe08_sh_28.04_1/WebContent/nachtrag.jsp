@@ -96,12 +96,16 @@
 											</tbody>
 										</table>
 									</div>
+									<p></p>
 									<ul class="actions">
 									
 									<li><a href="newNachtrag.jsp" id="btnNewNachtrag" class="button special">neuer Nachtrag</a></li>
 									<li><a href="editNachtrag.jsp" id="btnEditNachtrag" class="button">Nachtrag bearbeiten</a></li>
+									<li><a href="deleteNachtrag.jsp" id="btnDeleteNachtrag" class="button">Nachtrag entfernen</a></li>
 									
-										<li><a href="#" class="button alt">Zuruck</a></li>
+									<li><a href="" id="btnNachtragPruefen" class="button special disabled">Nachtrag Prüfen</a></li>
+									
+									<li><a href="home.jsp" class="button alt">Zurück</a></li>
 									</ul>
 								</section> 
 				</section>
@@ -139,12 +143,20 @@
 				
 				var hlink1 = document.getElementById("btnNewNachtrag");
 				var hlink2 = document.getElementById("btnEditNachtrag");
+
+				var hlink4 = document.getElementById("btnDeleteNachtrag");
+				var hlink3 = document.getElementById("btnNachtragPruefen");
 				if(elt!="Bauleiter"){
 					hlink1.href = "#";
 					hlink1.className = "button special disabled";
 
 					hlink2.href = "#";
-					hlink2.className = "button special disabled"; 
+					hlink2.className = "button special disabled";
+					hlink4.href = "#";
+					hlink4.className = "button special disabled";
+					
+					hlink3.href = "nachtragPruefen.jsp";
+					hlink3.className = "button special icon fa-check";
 				}
 		 }
 				var popupNachtrag;

@@ -43,15 +43,7 @@ public class Servlet_Nchtragskalkulation extends HttpServlet {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		session.removeAttribute("myNachtragTabele");
-		try {
-			session.setAttribute("myNachtragTabele", Project_Manager.getNachtragTabele((String) session.getAttribute("username")));
-			
-		} catch (SQLException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		res.sendRedirect("nachtrag.jsp");
+		res.sendRedirect("Servlet_NachtragTabele");
 				
 	}
 	@Override

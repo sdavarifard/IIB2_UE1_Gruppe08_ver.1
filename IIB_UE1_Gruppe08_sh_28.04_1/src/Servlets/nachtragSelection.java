@@ -39,6 +39,7 @@ public class nachtragSelection extends HttpServlet {
 				session.setAttribute("selectedProjectforEditNachtrag", Project_Manager.getProjectfromNachtragID(selectedNachtragID));
 				session.setAttribute("selectedPositionforEditNachtrag", Project_Manager.getPositionfromNachtragID(selectedNachtragID));
 				session.setAttribute("selectedBauteilforEditNachtrag", Project_Manager.getBauteilfromNachtragID(selectedNachtragID));
+				session.setAttribute("selectedPruefung", Project_Manager.getPruefungfromNachtragID(selectedNachtragID));
 			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block

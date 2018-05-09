@@ -359,7 +359,11 @@ public class Project_Manager {
 		return id;
 	}
 	
-
+	public static void deleteNachtragbyNachtagID(int Nachtrag_id) throws ClassNotFoundException, SQLException {
+		String SQL="";
+		SQL="delete from nachtrag where nachtrag_id="+Nachtrag_id+"; ";
+		execute(SQL);
+	}
 	
 	
 	public static List<Position> getPositionfromProject(int projectID) throws SQLException{
@@ -402,7 +406,7 @@ public class Project_Manager {
 		List<Pruefung> lp = new ArrayList<Pruefung>();
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
-		String SQL= "  select pruefung_id,pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id from project "
+		String SQL= "  select pruefung_id,pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id, pruefung_beschreibung from project "
 				+ "as p, user as u, user_hat_project as uhp , bauteil as b, position, nachtrag, pruefung where "
 				+ "pruefung_nachtrag_id = nachtrag_id and nachtrag_bauteil_id=b.bauteil_id and position_id ="
 				+ " b.bauteil_position_id and b.bauteil_project_id = p.project_id and "
@@ -414,7 +418,8 @@ public class Project_Manager {
 			p.setPruefung_id(rs.getInt(1));
 			p.setPruefung_ergebnis(rs.getString(2));
 			p.setPruefung_datum(rs.getDate(3).toLocalDate());
-			p.setPruefung_nachtrag_id(4);
+			p.setPruefung_nachtrag_id(rs.getInt(4));
+			p.setPruefung_beschreibung(rs.getString(5));
 			lp.add(p);
 		}
 		con.close();
@@ -422,10 +427,36 @@ public class Project_Manager {
 		return lp;
 	}
 	
+	public static Pruefung getPruefungfromNachtragID (int nachtragID) throws SQLException {
+		Pruefung n = new Pruefung();
+		Connection  con= databank.getInstance();
+		Statement st = con.createStatement();
+		String SQL="select * from pruefung where pruefung_nachtrag_id="+nachtragID+";";
+		ResultSet rs = st.executeQuery(SQL);
+		if(rs.next()) {
+			n.setPruefung_id(rs.getInt(1));
+			n.setPruefung_ergebnis(rs.getString(2));
+			n.setPruefung_datum(rs.getDate(3).toLocalDate());
+			n.setPruefung_nachtrag_id(rs.getInt(4));
+			n.setPruefung_beschreibung(rs.getString(5));
+		}
+		con.close();
+		return n;
+	}
+	
+	public static void insertPruefung(int pruefungID, String ergebnis, LocalDate datum, int nachtragID, String beschreibung) throws SQLException, ClassNotFoundException{
+		String SQL="";
+		SQL="INSERT INTO pruefung (pruefung_id, pruefung_ergebnis, pruefung_datum, pruefung_nachtrag_id, pruefung_beschreibung)"
+				+ " VALUES("+pruefungID+", '"+ergebnis+"', '"+datum+"', "+nachtragID+", '"+beschreibung+"') ON DUPLICATE KEY UPDATE"
+						+ " pruefung_ergebnis = VALUES(pruefung_ergebnis), pruefung_datum = VALUES(pruefung_datum),"
+				+ " pruefung_nachtrag_id = VALUES(pruefung_nachtrag_id), pruefung_beschreibung = VALUES(pruefung_beschreibung);";
+		execute(SQL);
+	}
+	
 	public static void setDefaultPruefung(LocalDate datum, int nachtragID) throws SQLException, ClassNotFoundException{
 		String SQLInsertInto="";
-		SQLInsertInto="insert into pruefung (pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id)"
-				+ " values ('Nicht Bewertet','"+datum+"',"+nachtragID+");";
+		SQLInsertInto="insert into pruefung (pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id,pruefung_beschreibung)"
+				+ " values ('Nicht Bewertet','"+datum+"',"+nachtragID+",'---');";
 		execute(SQLInsertInto);
 	}
 	 

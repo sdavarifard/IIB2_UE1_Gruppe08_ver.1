@@ -51,7 +51,7 @@
 									</li>
 								</ul>
 							</li>
-							<li><a href="index.jsp" class="button">Logout</a></li>
+							<li><a href="Servlet_Logout" class="button">Logout</a></li>
 						</ul>
 					</nav>
 				</header>
