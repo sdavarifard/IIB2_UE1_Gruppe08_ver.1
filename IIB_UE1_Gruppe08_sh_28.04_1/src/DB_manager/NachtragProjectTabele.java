@@ -16,6 +16,8 @@ public class NachtragProjectTabele {
 	private String nachtrag_vob;
 	private String pruefung_ergebnis;
 	private LocalDate pruefung_datum;
+	private String pruefung_beschreibung;
+	private int pruefung_flag;
 	
 	public String getProject_name() {
 		return project_name;
@@ -94,6 +96,18 @@ public class NachtragProjectTabele {
 	}
 	public void setNachtrag_id(int nachtrag_id) {
 		this.nachtrag_id = nachtrag_id;
+	}
+	public String getPruefung_beschreibung() {
+		return pruefung_beschreibung;
+	}
+	public void setPruefung_beschreibung(String pruefung_beschreibung) {
+		this.pruefung_beschreibung = pruefung_beschreibung;
+	}
+	public int getPruefung_flag() {
+		return pruefung_flag;
+	}
+	public void setPruefung_flag(int pruefung_flag) {
+		this.pruefung_flag = pruefung_flag;
 	}
 
 }

@@ -6,10 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletException;
+
+import org.joda.time.Days;
 
 import Beans.*;
 import DB_connect.databank;
@@ -406,7 +409,7 @@ public class Project_Manager {
 		List<Pruefung> lp = new ArrayList<Pruefung>();
 		Connection  con= databank.getInstance();
 		Statement st = con.createStatement();
-		String SQL= "  select pruefung_id,pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id, pruefung_beschreibung from project "
+		String SQL= "  select pruefung_id,pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id, pruefung_beschreibung, pruefung_flag from project "
 				+ "as p, user as u, user_hat_project as uhp , bauteil as b, position, nachtrag, pruefung where "
 				+ "pruefung_nachtrag_id = nachtrag_id and nachtrag_bauteil_id=b.bauteil_id and position_id ="
 				+ " b.bauteil_position_id and b.bauteil_project_id = p.project_id and "
@@ -420,6 +423,7 @@ public class Project_Manager {
 			p.setPruefung_datum(rs.getDate(3).toLocalDate());
 			p.setPruefung_nachtrag_id(rs.getInt(4));
 			p.setPruefung_beschreibung(rs.getString(5));
+			p.setPruefung_flag(rs.getInt(6));
 			lp.add(p);
 		}
 		con.close();
@@ -439,6 +443,7 @@ public class Project_Manager {
 			n.setPruefung_datum(rs.getDate(3).toLocalDate());
 			n.setPruefung_nachtrag_id(rs.getInt(4));
 			n.setPruefung_beschreibung(rs.getString(5));
+			n.setPruefung_flag(rs.getInt(6));
 		}
 		con.close();
 		return n;
@@ -446,17 +451,17 @@ public class Project_Manager {
 	
 	public static void insertPruefung(int pruefungID, String ergebnis, LocalDate datum, int nachtragID, String beschreibung) throws SQLException, ClassNotFoundException{
 		String SQL="";
-		SQL="INSERT INTO pruefung (pruefung_id, pruefung_ergebnis, pruefung_datum, pruefung_nachtrag_id, pruefung_beschreibung)"
-				+ " VALUES("+pruefungID+", '"+ergebnis+"', '"+datum+"', "+nachtragID+", '"+beschreibung+"') ON DUPLICATE KEY UPDATE"
+		SQL="INSERT INTO pruefung (pruefung_id, pruefung_ergebnis, pruefung_datum, pruefung_nachtrag_id, pruefung_beschreibung, pruefung_flag)"
+				+ " VALUES("+pruefungID+", '"+ergebnis+"', '"+datum+"', "+nachtragID+", '"+beschreibung+"',0) ON DUPLICATE KEY UPDATE"
 						+ " pruefung_ergebnis = VALUES(pruefung_ergebnis), pruefung_datum = VALUES(pruefung_datum),"
-				+ " pruefung_nachtrag_id = VALUES(pruefung_nachtrag_id), pruefung_beschreibung = VALUES(pruefung_beschreibung);";
+				+ " pruefung_nachtrag_id = VALUES(pruefung_nachtrag_id), pruefung_beschreibung = VALUES(pruefung_beschreibung),pruefung_flag= VALUES(pruefung_flag) ;";
 		execute(SQL);
 	}
 	
 	public static void setDefaultPruefung(LocalDate datum, int nachtragID) throws SQLException, ClassNotFoundException{
 		String SQLInsertInto="";
-		SQLInsertInto="insert into pruefung (pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id,pruefung_beschreibung)"
-				+ " values ('Nicht Bewertet','"+datum+"',"+nachtragID+",'---');";
+		SQLInsertInto="insert into pruefung (pruefung_ergebnis,pruefung_datum,pruefung_nachtrag_id,pruefung_beschreibung, pruefung_flag)"
+				+ " values ('NichtBewertet','"+datum+"',"+nachtragID+",'---',0);";
 		execute(SQLInsertInto);
 	}
 	 
@@ -513,7 +518,7 @@ public class Project_Manager {
 		Statement st = con.createStatement();
 		String SQL= "Select project_name, bauteil_name, nachtrag_datum, nachtrag_frist, kalkulation_menge, kalkulation_einheit,"
 				+ " kalkulation_preis_gesamt, nachtrag_vob,nachtrag_beschreibung, nachtrag_verursacher, pruefung_ergebnis, "
-				+ "pruefung_datum, nachtrag_id from project as p,nachtrag as n, bauteil as b," + 
+				+ "pruefung_datum, nachtrag_id, pruefung_beschreibung, pruefung_flag from project as p,nachtrag as n, bauteil as b," + 
 				" position as po, user as u, user_hat_project as uhp, pruefung as pr, kalkulation as k where"
 				+ " k.kalkulation_nachtrag_id=n.nachtrag_id and pr.pruefung_nachtrag_id=n.nachtrag_id  "
 				+ "and n.nachtrag_bauteil_id=b.bauteil_id and b.bauteil_position_id = po.position_id and "
@@ -533,8 +538,11 @@ public class Project_Manager {
 			n.setNachtrag_beschreibung(rs.getString(9));
 			n.setNachtrag_verursacher(rs.getString(10));
 			n.setPruefung_ergebnis(rs.getString(11));
-			n.setPruefung_datum(rs.getDate(12).toLocalDate());
+			if(rs.wasNull()) n.setPruefung_datum(null);
+			else{n.setPruefung_datum(rs.getDate(12).toLocalDate());}
 			n.setNachtrag_id(rs.getInt(13));
+			n.setPruefung_beschreibung(rs.getString(14));
+			n.setPruefung_flag(rs.getInt(15));
 			l.add(n);
 		}
 		con.close();
@@ -542,9 +550,9 @@ public class Project_Manager {
 		return l;
 	}
 	
-	public static ArrayList<Nachtrag> NachtragFrist(List<Nachtrag> list) {
-		ArrayList <Nachtrag> mynachtrag=new ArrayList<Nachtrag>();
-		for(Nachtrag nachtrag:list) {
+	public static ArrayList<NachtragProjectTabele> NachtragFrist(List<NachtragProjectTabele> list) {
+		ArrayList <NachtragProjectTabele> mynachtrag=new ArrayList<NachtragProjectTabele>();
+		for(NachtragProjectTabele nachtrag:list) {
 			int date=nachtrag.getNachtrag_frist().getDayOfYear()-LocalDate.now().getDayOfYear();
 			if(date<30)
 				mynachtrag.add(nachtrag);
@@ -552,4 +560,23 @@ public class Project_Manager {
 		
 		return mynachtrag;
 	}
+	
+	public static ArrayList<NachtragProjectTabele> PruefungErgebnissNEW(List<NachtragProjectTabele> list) {
+		ArrayList <NachtragProjectTabele> m=new ArrayList<NachtragProjectTabele>();
+		for(NachtragProjectTabele p:list) {
+			long daysBetween = daysToNow(p.getPruefung_datum());
+
+			if(daysBetween<30 && daysBetween>0)
+			{
+				if(!(p.getPruefung_ergebnis().contentEquals("NichtBewertet"))) m.add(p);
+			}
+				
+		}
+		
+		return m;
+	}
+	
+	public static long daysToNow(LocalDate fromDate) {
+		  return ChronoUnit.DAYS.between(fromDate, LocalDate.now());
+		}
 }

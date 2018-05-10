@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="assets/css/main.css" />
 		<!--[if lte IE 8]><link rel="stylesheet" href="assets/css/ie8.css" /><![endif]-->
 	</head>
-	<body>
+	<body onload="hide()">
 		<div id="page-wrapper">
 
 			<!-- Header -->
@@ -31,7 +31,6 @@
 
 							<!-- Form -->
 								<section class="box">
-									<h3>Form</h3>
 									
 									<form method="post" action="Login_User">
 										<div class="row uniform 50%">
@@ -42,15 +41,13 @@
 												<input type="password" name="password" value="" placeholder="Password" />
 											</div>
                                             </div>
-                                            <br>
-                                            <input type="text" id="Fehler" name="Fehler" style="color: red;" value="${FehlerLogin}">
-										
+                                            <p id="Fehler" name="Fehler" style="color: red;"></p>
 										<div class="row uniform">
 											<div class="12u">
 												<ul class="actions">
 													<li><input type="submit" value="Login" /></li>
 													<li><input type="reset" value="Reset" class="alt" /></li>
-													<li></li>
+													
 												</ul>
 											</div>
 										</div>
@@ -80,8 +77,22 @@
 				</footer>
 
 		</div>
-
+<input type="hidden" id="get_Fehler" name="get_Fehler" value="${FehlerLogin}">
 		<!-- Scripts -->
+		<script type="text/javascript">
+		function hide(){
+			//var elt = document.getElementById("Fehler").value;
+			//var elt2 = document.getElementById("divFehler");
+			//elt = document.getElementById("get_Fehler").value;
+			//if(elt=="") elt2.style.display = "none";
+			document.getElementById("Fehler").innerHTML = document.getElementById("get_Fehler").value;
+		}
+		
+		setTimeout(function(){
+			document.getElementById("get_Fehler").value="";
+			}, 3000);
+		
+		</script>
 			<script src="assets/js/jquery.min.js"></script>
 			<script src="assets/js/jquery.dropotron.min.js"></script>
 			<script src="assets/js/jquery.scrollgress.min.js"></script>

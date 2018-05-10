@@ -23,26 +23,22 @@ public class Login_User extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		String err = "";
+		String err = request.getParameter("get_Fehler");
+		err="";
 		HttpSession session = request.getSession(true);
 		
 		String username = request.getParameter("login");
 		String password = request.getParameter("password");
 		
 		if(username.equals("") || password.equals("")) {
-			//out.println("<meta http-equiv='refresh' content='3;URL=index.html'>");//redirects after 3 seconds
-			   //out.println("<p style='color:red;'>Bitte Füllen Username und Password!!</p>");
 			err = "Bitte Füllen Username und Password!!";
-			session.setAttribute("FehlerLogin", err);
-			response.sendRedirect("index.jsp");
+
 		}else {
 		
 			try {
 				boolean status = User_Manager.loginVerify(username, password);
 				if(status==false) {
 					err = "User oder Password FALSCH!!";
-					session.setAttribute("FehlerLogin", err);
-					response.sendRedirect("index.jsp");
 				}if(err.length()==0) {
 						
 						session.setAttribute("login", "true");
@@ -51,7 +47,8 @@ public class Login_User extends HttpServlet {
 						session.setAttribute("username", username);
 						
 						session.setAttribute("myNachtragTabele", Project_Manager.getNachtragTabele(username));
-						session.setAttribute("mynachtrag",Project_Manager.NachtragFrist( Project_Manager.getNachtrag(username)));
+						session.setAttribute("mynachtrag",Project_Manager.NachtragFrist( Project_Manager.getNachtragTabele(username)));
+						session.setAttribute("myPruefungFrist",Project_Manager.PruefungErgebnissNEW( Project_Manager.getNachtragTabele(username)));
 						response.sendRedirect("home.jsp");
 						
 					}
@@ -62,6 +59,11 @@ public class Login_User extends HttpServlet {
 				}
 			
 			
+			}
+		
+			if(err.length()!=0) {
+			session.setAttribute("FehlerLogin", err);
+			response.sendRedirect("index.jsp");
 			}
 		}
 }

@@ -25,18 +25,18 @@ public class Servlet_Nchtragskalkulation extends HttpServlet {
 		Nachtragskalkulation nk = new Nachtragskalkulation();
 		HttpSession session = req.getSession(true);
 		int nachtragID = (int) session.getAttribute("nachtragID");
-		String einheit =(String) session.getAttribute("Kal_Einheit_EditNachtrag") ;
-		double menge = (double) session.getAttribute("Kal_Menge_EditNachtrag");
-		double preisEin=(double) session.getAttribute("Kal_Preis_Einheit_EditNachtrag");
-		double preisGes= (double) session.getAttribute("Kal_Preis_Gesamt_EditNachtrag");
-		LocalDate datum = (LocalDate) session.getAttribute("datum_editNachtrag");
+		String einheit =(String) session.getAttribute("Kal_Einheit") ;
+		double menge2 = (double) session.getAttribute("Kal_Menge");
+		double preisEin=(double) session.getAttribute("Kal_Preis_Einheit");
+		double preisGes= (double) session.getAttribute("Kal_Preis_Gesamt");
+		LocalDate datum = (LocalDate) session.getAttribute("datum");
 		try {
 			Project_Manager.setDefaultPruefung(datum, nachtragID);
 		} catch (ClassNotFoundException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		nk = Project_Manager.insertNewNachtragskalkulation(menge, einheit, preisEin, preisGes, nachtragID);
+		nk = Project_Manager.insertNewNachtragskalkulation(menge2, einheit, preisEin, preisGes, nachtragID);
 		try {
 			Project_Manager.insertNewNachtragKalkulationSQLTabele(nk);
 		} catch (ClassNotFoundException | SQLException e) {
@@ -48,7 +48,6 @@ public class Servlet_Nchtragskalkulation extends HttpServlet {
 	}
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		// TODO Auto-generated method stub
 		doPost(req, resp);
 	}
 

@@ -1,5 +1,7 @@
 package Beans;
 
+import java.io.OptionalDataException;
+import java.sql.Date;
 import java.time.LocalDate;
 
 public class Pruefung {
@@ -9,14 +11,8 @@ public class Pruefung {
   private String pruefung_beschreibung;
   
   private int pruefung_nachtrag_id;
+  private int pruefung_flag;
   
-  
-  public LocalDate getPruefung_datum() {
-	return pruefung_datum;
-}
-public void setPruefung_datum(LocalDate pruefung_datum) {
-	this.pruefung_datum = pruefung_datum;
-}
 public int getPruefung_nachtrag_id() {
 	return pruefung_nachtrag_id;
 }
@@ -44,6 +40,18 @@ public void setPruefung_nachtrag_id(int pruefung_nachtrag_id) {
 	}
 	public void setPruefung_beschreibung(String pruefung_beschreibung) {
 		this.pruefung_beschreibung = pruefung_beschreibung;
+	}
+	public LocalDate getPruefung_datum() {
+		return pruefung_datum;
+	}
+	public void setPruefung_datum(LocalDate pruefung_datum) {
+		this.pruefung_datum = pruefung_datum;
+	}
+	public int getPruefung_flag() {
+		return pruefung_flag;
+	}
+	public void setPruefung_flag(int pruefung_flag) {
+		this.pruefung_flag = pruefung_flag;
 	}
 
 }

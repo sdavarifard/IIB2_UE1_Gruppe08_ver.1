@@ -18,6 +18,8 @@
 				
 				if(elt=="Bauleiter"){
 					document.getElementById("divNactragFrist").style.display = "none";
+				}else if(elt=="Nachtragmanager"){
+					document.getElementById("divNewPruefung").style.display = "none";
 				}
 				
 			}
@@ -84,10 +86,11 @@
 										<table>
 											<thead >
 												<tr>
-													<th>N0achtrag Titel</th>
+													<th>Project Name</th>
+													<th>Bauteil</th>
 													<th>Nachtrag Datum</th>
 													<th  bgcolor="#FF0000">Frist</th>
-                                                    <th>VOB Kl.</th>
+                                                     <th>Preis &euro;</th>
                                                     <th>Beschreibung</th>
                                                     <th>Verursacher</th>
                                                    
@@ -96,12 +99,47 @@
 											<tbody>
 												<c:forEach items="${mynachtrag}" var="mn">
 												<tr>
-													<td>${mn.getNachtrag_titel()}</td>
+													<td>${mn.getProject_name()}</td>
+													<td>${mn.getBauteil_name()}</td>
 													<td>${mn.getNachtrag_datum()}</td>
 													<td bgcolor="#FF0000" >${mn.getNachtrag_frist()}</td>
-													<td>${mn.getNachtrag_vob()}</td>
+													<td>${mn.getKalkulation_preis_gesamt()}</td>
 													<td>${mn.getNachtrag_beschreibung()}</td>
 													<td>${mn.getNachtrag_verursacher()}</td>
+													
+													
+												</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
+						</div>
+						
+						<div id="divNewPruefung">
+						<h3>neue antwortete Prüfung in letzte 30 Tage</h3>
+
+									<div class="table-wrapper"  >
+										<table>
+											<thead >
+												<tr>
+													<th>Project Name</th>
+													<th>Bauteil</th>
+													<th>Nachtrag Datum</th>
+													<th  bgcolor="#FF0000">Prüfungsdatum</th>
+                                                     <th>Ergebnis</th>
+                                                    <th>Beschreibung</th>
+                                                   
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${myPruefungFrist}" var="mn">
+												<tr>
+													<td>${mn.getProject_name()}</td>
+													<td>${mn.getBauteil_name()}</td>
+													<td>${mn.getNachtrag_datum()}</td>
+													<td bgcolor="#00ff37" >${mn.getPruefung_datum()}</td>
+													<td>${mn.getPruefung_ergebnis()}</td>
+													<td>${mn.getPruefung_beschreibung()}</td>
 													
 													
 												</tr>
@@ -116,14 +154,56 @@
 						<div class="features-row">
 							<section>
 								<span class="icon major fa-bolt accent2"></span>
-								<h3>Sehr Schnell</h3>
-								<pre>
-								</pre>
+								<h3>Nachtrags</h3>
+									<div class="table-wrapper"  >
+										<table>
+											<thead >
+												<tr>
+													<th>Project Name</th>
+													<th>Bauteil</th>
+                                                    <th>Preis &euro;</th>
+                                                    <th>Prüfung Ergebnis</th>
+                                               
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${myNachtragTabele}" var="mn">
+												<tr>
+													<td>${mn.getProject_name()}</td>
+													<td>${mn.getBauteil_name()}</td>
+													<td>${mn.getKalkulation_preis_gesamt()}</td>
+													<td>${mn.getPruefung_ergebnis()}</td>
+													
+													
+												</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
 							</section>
 							<section>
 								<span class="icon major fa-area-chart accent3"></span>
-								<h3>Immer Aktive</h3>
-								<p>Server</p>
+								<h3>Projects</h3>
+								<div class="table-wrapper"  >
+										<table>
+											<thead >
+												<tr>
+													<th>Name</th>
+                                                    <th>Land</th>
+                                                    <th>Stadt</th>
+												</tr>
+											</thead>
+											<tbody>
+												<c:forEach items="${myProject}" var="mp">
+												<tr>
+													<td>${mp.getProject_name()}</td>
+													<td>${mp.getProject_land()}</td>
+													<td>${mp.getProject_Stadt()}</td>
+												</tr>
+												</c:forEach>
+											</tbody>
+										</table>
+									</div>
 							</section>
 						</div>
 						<div class="features-row">
